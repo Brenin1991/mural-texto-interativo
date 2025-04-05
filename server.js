@@ -115,7 +115,7 @@ app.post('/api/message/:id/aprovar', (req, res) => {
                     id: row.id,
                     name: row.name,
                     phrase: row.phrase,
-                    imageUrl: 'http://localhost:3000' + row.imageUrl,
+                    imageUrl: 'https://mural-texto-interativo.fly.dev' + row.imageUrl,
                     date: row.date
                 };
 
