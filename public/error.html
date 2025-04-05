@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <title>Erro de Autenticação</title>
+    <style>
+        body {
+          font-family: "Poppins", sans-serif;
+          background-image: url("images/fundo.jpg");
+          background-size: cover;
+          background-position: center;
+          margin: 0;
+          padding: 0;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100vh;
+          flex-direction: column;
+          font-weight: 700;
+          padding: 20px;
+          box-sizing: border-box;
+        }
+  
+        input[type="date"] {
+          width: 90%;
+          padding: 12px;
+          border: 1px solid #ddd;
+          border-radius: 4px;
+          font-size: 20px;
+          transition: all 0.3s ease;
+          box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+          background: rgba(255, 255, 255, 1);
+        }
+        
+        .headline {
+          color: #fff;
+          font-size: 24px;
+          margin-bottom: 20px;
+        }
+  
+        .container {
+          text-align: center;
+          width: 100%;
+          max-width: 400px;
+          
+        }
+  
+        h1 {
+          color: #fff;
+          font-size: larger;
+        }
+  
+        #sonho-grande {
+          font-size: small;
+        }
+  
+        h2 {
+          color: #fff;
+          font-size: larger;
+        }
+  
+        form {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+  
+        .input-container {
+          position: relative;
+          margin-bottom: 30px;
+          width: 80%;
+          height: 50px;
+        }
+  
+        input[type="text"],
+        input[type="email"],
+        textarea {
+          width: 90%;
+          padding: 12px;
+          border: 1px solid #ddd;
+          border-radius: 4px;
+          font-size: 20px;
+          transition: all 0.3s ease;
+          box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+          background: rgba(255, 255, 255, 1);
+        }
+  
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        textarea:focus {
+          border-color: #494949;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+          background: #fff;
+        }
+  
+        input[type="date"] {
+          width: 90%;
+          padding: 12px;
+          border: 1px solid #ddd;
+          border-radius: 4px;
+          font-size: 20px;
+          transition: all 0.3s ease;
+          box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+          background: rgba(255, 255, 255, 1);
+        }
+  
+        label {
+          position: absolute;
+          top: 12px;
+          left: 12px;
+          color: #494949;
+          transition: all 0.3s ease;
+          pointer-events: none;
+        }
+  
+        input:focus + label,
+        input:not(:placeholder-shown) + label,
+        textarea:focus + label,
+        textarea:not(:placeholder-shown) + label {
+          top: 0px;
+          left: 12px;
+          font-size: 12px;
+          color: #ffffff00;
+          padding: 0 4px;
+        }
+  
+        button {
+          width: 40%;
+          background-color: #fff;
+          color: #ff172c;
+          border: none;
+          padding: 14px;
+          border-radius: 10px;
+          font-size: 18px;
+          cursor: pointer;
+          transition: background-color 0.3s ease, box-shadow 0.3s ease;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+  
+        button:hover {
+          background-color: #ffe0dc;
+          box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+  
+        .thank-you-container {
+          display: none;
+          position: fixed;
+          top: 0;
+          left: 0;
+          background-image: url("images/fundo_2.png");
+          background-size: cover;
+          background-position: center;
+          z-index: 9999;
+          text-align: center;
+          padding: 50px;
+          box-sizing: border-box;
+          width: 100%;
+          height: 100%;
+          padding: 0px 50px 50px 50px;
+        }
+  
+        .message-container {
+          position: relative;
+          display: inline-block;
+          border: 5px solid #f85713; /* Borda do retângulo */
+          padding: 20px; /* Espaçamento interno */
+          border-radius: 20px; /* Bordas arredondadas */
+          background-color: #eb0033; /* Fundo branco semi-transparente */
+          width: 80%;
+          height: 50%;
+        }
+  
+        .message-bubble {
+          position: absolute;
+          background-image: url("images/balao.png");
+          background-size: cover;
+          background-position: center;
+          width: 180px; /* Ajuste conforme necessário */
+          height: 200px;
+          bottom: 100px;
+          right: 50px;
+        }
+  
+        .message-bubble p {
+          color: #ddd;
+          padding: 5px;
+          overflow-wrap: break-word; /* Garante a quebra de palavras longas */
+        }
+  
+        .message-simbolo {
+          position: absolute;
+          width: 120px; /* Ajuste conforme necessário */
+          height: auto;
+          bottom: -10px;
+          left: -10px;
+        }
+  
+        .message-text {
+          position: relative;
+          padding: 20px;
+          color: #ffffff; /* Cor do texto para contraste */
+          font-size: 18px;
+          margin: 0;
+          z-index: 1;
+        }
+  
+        .image-container {
+          position: absolute;
+          display: inline-block;
+          width: 120px;
+          height: 120px;
+          border-radius: 50%;
+          overflow: hidden;
+          margin: 20px auto;
+          border: 2px solid #890019;
+          bottom: 0px;
+          right: 10px;
+        }
+  
+        .uploaded-image {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+  
+        .reload-button,
+        .share-button {
+          background-image: url("images/botao-download.png"); /* Substitua pelo caminho da sua imagem */
+          background-size: cover;
+          background-position: center;
+          width: 50px;
+          height: 50px;
+          background-color: #ffffff00;
+          box-shadow: 0 6px 12px rgba(0, 0, 0, 0);
+        }
+  
+        .reload-button:hover,
+        .share-button:hover {
+          background-color: #ffe0dc00;
+          box-shadow: 0 6px 12px rgba(0, 0, 0, 0);
+        }
+  
+        @media (max-width: 600px) {
+          .container {
+            padding: 15px;
+          }
+  
+          input[type="text"],
+          input[type="email"],
+          textarea {
+            padding: 10px;
+          }
+  
+          button {
+            margin-top: 30px;
+            padding: 14px;
+            font-size: 16px;
+          }
+        }
+  
+        /* Estilo para o botão de upload */
+        input[type="file"] {
+          display: none;
+        }
+        input[type="date"] {
+          width: 90%;
+          padding: 12px;
+          border: 1px solid #ddd;
+          border-radius: 4px;
+          font-size: 20px;
+          transition: all 0.3s ease;
+          box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+          background: rgba(255, 255, 255, 1);
+        }
+  
+        .custom-file-upload {
+          margin-top: 30px;
+          background-color: rgba(255, 255, 255, 0);
+          border: none;
+          line-height: 0;
+          font-size: 17px;
+          display: inline-block;
+          font-weight: 100;
+          position: relative;
+          z-index: 1;
+          cursor: pointer;
+          pointer-events: auto;
+          overflow: hidden;
+          height: 80px;
+          width: 100px;
+          margin-right: 10px;
+        }
+  
+        .custom-file-upload span.material-symbols-outlined {
+          display: inline-block;
+          vertical-align: middle;
+          margin-right: 20px;
+          font-size: 24px; /* Ajuste o tamanho do ícone conforme necessário */
+        }
+  
+        .custom-file-upload::before {
+          content: ""; /* Cria um pseudo-elemento para exibir a imagem */
+          background-image: url("images/selfie.png"); /* Substitua pelo caminho da sua imagem */
+          background-size: cover;
+          background-position: center;
+          position: absolute;
+          margin-right: 20px;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          z-index: -1; /* Coloca a imagem atrás do conteúdo do botão */
+        }
+  
+        .checkbox-container {
+          display: flex;
+          align-items: center;
+        }
+  
+        .checkbox-container label {
+          position: relative;
+          pointer-events: none;
+          cursor: pointer;
+        }
+  
+        .termos {
+          margin-top: 20px;
+        }
+  
+        /* Popup styles */
+        .popup {
+          display: none;
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0, 0, 0, 0.8);
+          z-index: 9999;
+          justify-content: center;
+          align-items: center;
+          text-align: center;
+        }
+  
+        .popup-content {
+          background: #fff;
+          padding: 20px;
+          border-radius: 10px;
+          text-align: left;
+          max-width: 600px;
+          width: 80%;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+          text-align: center;
+        }
+  
+        .popup-content h3 {
+          margin-top: 0;
+        }
+  
+        .popup-content p {
+          font-size: 16px;
+          line-height: 1.5;
+        }
+  
+        .popup-close {
+          background: #ff172c;
+          color: #fff;
+          border: none;
+          padding: 10px 20px;
+          border-radius: 5px;
+          cursor: pointer;
+          font-size: 16px;
+          margin-top: 20px;
+        }
+  
+        .name-text {
+          position: absolute;
+          bottom: 50px;
+          right: 10px;
+          font-size: 10px;
+        }
+  
+        .date-text {
+          position: absolute;
+          bottom: 70px;
+          left: 10px;
+          font-size: 10px;
+        }
+  
+        .termos-label {
+          color: #ffffff !important;
+        }
+
+        #language-selector {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 1000;
+      }
+
+      #toggle-language {
+        background-color: #ffffff;
+        border: 1px solid #ddd;
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      #toggle-language:hover {
+        transform: scale(1.1);
+        box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+      }
+
+      #language-flag {
+        width: 40px;
+        height: auto;
+        object-fit: contain; /* Mantém a proporção da imagem */
+        border-radius: 50%; /* Opcional: para deixar a imagem redonda */
+      }
+  
+      </style>
+</head>
+<body>
+  <div id="language-selector">
+    <button id="toggle-language">
+      <img
+        id="language-flag"
+        src="https://flagcdn.com/w40/br.png"
+        alt="Português"
+      />
+    </button>
+  </div>
+
+    <div class="container">
+        <h1 id="title">Token inválido ou ausente</h1>
+        <p id="subTitle">Solicite um novo token para acessar esta página.</p>
+    </div>
+    <script>
+
+      
+const translations = {
+        pt: {
+          title: "Token inválido ou ausente",
+          subTitle: "Solicite um novo token para acessar esta página."
+        },
+        en: {
+          title: "Invalid or missing token",
+          subTitle: "Request a new token to access this page."
+        },
+      };
+
+      // Aplica as traduções na página
+      function applyTranslations(language) {
+        document.getElementById("title").textContent =
+          translations[language].title;
+        document.getElementById("subTitle").textContent =
+          translations[language].subTitle;
+      }
+
+      // Controle do botão flutuante com bandeiras
+      const languageButton = document.getElementById("toggle-language");
+      const languageFlag = document.getElementById("language-flag");
+
+      // Armazena o idioma atual
+      let currentLanguage = "pt";
+
+      languageFlag.src = "./images/EN.png"; // Bandeira do Brasil
+
+      // Alterna o idioma ao clicar no botão
+      languageButton.addEventListener("click", () => {
+        currentLanguage = currentLanguage === "pt" ? "en" : "pt";
+
+        if (currentLanguage === "pt") {
+          languageFlag.src = "./images/EN.png"; // Bandeira do Brasil
+          languageFlag.alt = "Português";
+        } else {
+          languageFlag.src = "./images/BR.png"; // Bandeira do Reino Unido
+          languageFlag.alt = "English";
+        }
+
+        // Aplica a tradução
+        applyTranslations(currentLanguage);
+      });
+      
+
+      // Tradução inicial
+      applyTranslations(currentLanguage);
+
+    </script>
+</body>
+</html>

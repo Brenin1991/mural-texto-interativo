@@ -1,0 +1,21 @@
+{
+    "pt": {
+      "title-01": "Obrigado!",
+      "title-02": "Sonho Grande recebido com sucesso!",
+      "headline": "Preencha o formulário abaixo",
+      "namePlaceholder": "Digite seu nome",
+      "emailPlaceholder": "Digite seu email",
+      "submitButton": "Enviar",
+      "thankYouMessage": "Obrigado por enviar sua mensagem!"
+    },
+    "en": {
+        "title-01": "Obrigado!",
+        "title-02": "Sonho Grande recebido com sucesso!",
+      "headline": "Fill out the form below",
+      "namePlaceholder": "Enter your name",
+      "emailPlaceholder": "Enter your email",
+      "submitButton": "Submit",
+      "thankYouMessage": "Thank you for submitting your message!"
+    }
+  }
+  

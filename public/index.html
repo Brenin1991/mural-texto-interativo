@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <title>Cadastro de Frases</title>
+    <style>
+      body {
+        font-family: "Poppins", sans-serif;
+        background-image: url("images/fundo.jpg");
+        background-size: cover;
+        background-position: center;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        flex-direction: column;
+        font-weight: 700;
+        padding: 20px;
+        box-sizing: border-box;
+      }
+
+      input[type="date"] {
+        width: 90%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 20px;
+        transition: all 0.3s ease;
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        background: rgba(255, 255, 255, 1);
+      }
+
+      .headline {
+        color: #fff;
+        font-size: 24px;
+        margin-bottom: 20px;
+      }
+
+      .container {
+        text-align: center;
+        width: 100%;
+        max-width: 400px;
+      }
+
+      h1 {
+        color: #fff;
+        font-size: larger;
+      }
+
+      #sonho-grande {
+        font-size: small;
+        display: none;
+      }
+
+      #date {
+        display: none;
+      }
+
+      h2 {
+        color: #fff;
+        font-size: larger;
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .input-container {
+        position: relative;
+        margin-bottom: 30px;
+        width: 80%;
+        height: 50px;
+      }
+
+      input[type="text"],
+      input[type="email"],
+      textarea {
+        width: 90%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 20px;
+        transition: all 0.3s ease;
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        background: rgba(255, 255, 255, 1);
+      }
+
+      input[type="text"]:focus,
+      input[type="email"]:focus,
+      textarea:focus {
+        border-color: #494949;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        background: #fff;
+      }
+
+      input[type="date"] {
+        width: 90%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 20px;
+        transition: all 0.3s ease;
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        background: rgba(255, 255, 255, 1);
+      }
+
+      label {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        color: #494949;
+        transition: all 0.3s ease;
+        pointer-events: none;
+      }
+
+      input:focus + label,
+      input:not(:placeholder-shown) + label,
+      textarea:focus + label,
+      textarea:not(:placeholder-shown) + label {
+        top: 0px;
+        left: 12px;
+        font-size: 12px;
+        color: #ffffff00;
+        padding: 0 4px;
+      }
+
+      button {
+        width: 40%;
+        background-color: #fff;
+        color: #ff172c;
+        border: none;
+        padding: 14px;
+        border-radius: 10px;
+        font-size: 18px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+
+      button:hover {
+        background-color: #ffe0dc;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+      }
+
+      .thank-you-container {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-image: url("images/fundo.jpg");
+        background-size: cover;
+        background-position: center;
+        z-index: 9999;
+        text-align: center;
+        padding: 50px;
+        box-sizing: border-box;
+        width: 100%;
+        height: 100%;
+        padding: 0px 50px 50px 50px;
+      }
+
+      .message-container {
+        position: relative;
+        display: inline-block;
+        padding: 20px; /* Espaçamento interno */
+        border-radius: 20px; /* Bordas arredondadas */
+        width: 80%;
+        height: 50%;
+      }
+
+      .message-bubble {
+        position: absolute;
+        background-size: cover;
+        background-position: center;
+        width: 180px; /* Ajuste conforme necessário */
+        height: 200px;
+        bottom: 100px;
+        right: 50px;
+      }
+
+      .message-bubble p {
+        color: #ddd;
+        padding: 5px;
+        overflow-wrap: break-word; /* Garante a quebra de palavras longas */
+      }
+
+      .message-simbolo {
+        position: absolute;
+        width: 120px; /* Ajuste conforme necessário */
+        height: auto;
+        bottom: -10px;
+        left: -10px;
+      }
+
+      .message-text {
+        position: relative;
+        padding: 20px;
+        color: #ffffff; /* Cor do texto para contraste */
+        font-size: 18px;
+        margin: 0;
+        z-index: 1;
+      }
+
+      .image-container {
+        position: absolute;
+        display: inline-block;
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        overflow: hidden;
+        margin: 20px auto;
+        border: 2px solid #890019;
+        bottom: 0px;
+        right: 10px;
+      }
+
+      .uploaded-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .reload-button,
+      .share-button {
+        background-image: url("images/botao-download.png"); /* Substitua pelo caminho da sua imagem */
+        background-size: cover;
+        background-position: center;
+        width: 50px;
+        height: 50px;
+        background-color: #ffffff00;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0);
+      }
+
+      .reload-button:hover,
+      .share-button:hover {
+        background-color: #ffe0dc00;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0);
+      }
+
+      @media (max-width: 600px) {
+        .container {
+          padding: 15px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        textarea {
+          padding: 10px;
+        }
+
+        button {
+          margin-top: 30px;
+          padding: 14px;
+          font-size: 16px;
+        }
+      }
+
+      /* Estilo para o botão de upload */
+      input[type="file"] {
+        display: none;
+      }
+      input[type="date"] {
+        width: 90%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 20px;
+        transition: all 0.3s ease;
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        background: rgba(255, 255, 255, 1);
+      }
+
+      .custom-file-upload {
+        margin-top: 30px;
+        background-color: rgba(255, 255, 255, 0);
+        border: none;
+        line-height: 0;
+        font-size: 17px;
+        display: inline-block;
+        font-weight: 100;
+        position: relative;
+        z-index: 1;
+        cursor: pointer;
+        pointer-events: auto;
+        overflow: hidden;
+        height: 80px;
+        width: 100px;
+        margin-right: 10px;
+      }
+
+      .custom-file-upload span.material-symbols-outlined {
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 20px;
+        font-size: 24px; /* Ajuste o tamanho do ícone conforme necessário */
+      }
+
+      .custom-file-upload::before {
+        content: ""; /* Cria um pseudo-elemento para exibir a imagem */
+        background-image: url("images/selfie.png"); /* Substitua pelo caminho da sua imagem */
+        background-size: cover;
+        background-position: center;
+        position: absolute;
+        margin-right: 20px;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: -1; /* Coloca a imagem atrás do conteúdo do botão */
+      }
+
+      .checkbox-container {
+        display: flex;
+        align-items: center;
+      }
+
+      .checkbox-container label {
+        position: relative;
+        pointer-events: none;
+        cursor: pointer;
+      }
+
+      .termos {
+        margin-top: 20px;
+      }
+
+      /* Popup styles */
+      .popup {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+        z-index: 9999;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+      }
+
+      .popup-content {
+        background: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: left;
+        max-width: 600px;
+        width: 80%;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        text-align: center;
+      }
+
+      .popup-content h3 {
+        margin-top: 0;
+      }
+
+      .popup-content p {
+        font-size: 16px;
+        line-height: 1.5;
+      }
+
+      .popup-close {
+        background: #ff172c;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        margin-top: 20px;
+      }
+
+      .name-text {
+        position: absolute;
+        bottom: 50px;
+        right: 10px;
+        font-size: 10px;
+      }
+
+      .date-text {
+        position: absolute;
+        bottom: 70px;
+        left: 10px;
+        font-size: 10px;
+      }
+
+      .termos-label {
+        color: #ffffff !important;
+      }
+
+      #language-selector {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 1000;
+      }
+
+      #toggle-language {
+        background-color: #ffffff;
+        border: 1px solid #ddd;
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      #toggle-language:hover {
+        transform: scale(1.1);
+        box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+      }
+
+      #language-flag {
+        width: 40px;
+        height: auto;
+        object-fit: contain; /* Mantém a proporção da imagem */
+        border-radius: 50%; /* Opcional: para deixar a imagem redonda */
+      }
+
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  </head>
+  <body>
+    <div id="language-selector">
+      <button id="toggle-language">
+        <img
+          id="language-flag"
+          src="https://flagcdn.com/w40/br.png"
+          alt="Português"
+        />
+      </button>
+    </div>
+
+    <div class="thank-you-container">
+      <h1 id="title-01">Obrigado!</h1>
+      <h2 id="title-02">Sonho Grande recebido com sucesso!</h2>
+      <div class="message-container">
+        <!-- A imagem está dentro do mesmo contêiner -->
+        <div class="image-container">
+          <img id="uploadedImage" alt="Imagem Enviada" class="uploaded-image" />
+        </div>
+        <div alt="Balão de Conversa" class="message-bubble">
+          <p id="thankYouMessage" class="message-text"></p>
+          <p id="date-text" class="message-text"></p>
+        </div>
+      </div>
+      <button class="share-button" onclick="shareOnSocialMedia()"></button>
+      <h2 id="shareButton">Compartilhe nas redes sociais!</h2>
+    </div>
+
+    <div class="container">
+      <form id="phraseForm" enctype="multipart/form-data">
+        <div class="input-container">
+          <input type="text" id="name" name="name" required placeholder=" " />
+          <label for="name">Nome</label>
+        </div>
+        <div class="input-container">
+          <textarea
+            id="phrase"
+            name="phrase"
+            maxlength="300"
+            required
+            placeholder=" "
+          ></textarea>
+          <label for="phrase">Digite a frase</label>
+        </div>
+        <label for="photo-input" class="custom-file-upload"></label>
+        <input
+          type="file"
+          id="photo-input"
+          name="photo"
+          accept="image/*;capture=camera"
+        />
+        <img
+          id="preview"
+          src="#"
+          alt="Pré-visualização"
+          style="display: none; max-width: 300px; max-height: 300px"
+        /><br /><br />
+        <h1 id="tire-self-title">Tire sua self!</h1>
+        <div class="termos">
+          <div class="checkbox-container">
+            <input
+              type="checkbox"
+              id="termsPrivacidade"
+              name="termsPrivacidade"
+              required
+            />
+            <label class="termos-label" for="termsPrivacidade"
+              >Termos de Privacidade</label
+            >
+          </div>
+          <div class="checkbox-container">
+            <input
+              type="checkbox"
+              id="autorizacaoImagem"
+              name="autorizacaoImagem"
+              required
+            />
+            <label class="termos-label" for="autorizacaoImagem"
+              >Autorização do uso de imagem</label
+            >
+          </div>
+        </div>
+        <button type="submit">ENVIAR</button>
+      </form>
+    </div>
+
+    <!-- Popup for Termos de Privacidade -->
+    <div class="popup" id="popupTermos">
+      <div class="popup-content">
+        <h3>Termos de Privacidade</h3>
+        <p>
+          Visitor Center iFood Os dados coletados serão tratados em conformidade
+          com a Lei Geral de Proteção de Dados (Lei nº 13.709/2018) e demais
+          legislações aplicáveis. As informações fornecidas serão utilizadas
+          exclusivamente para enviar eventuais comunicações e atualizações sobre
+          o Visitor Center e futuros eventos promovidos pelo iFood. Garantimos
+          que tais dados não serão compartilhados com terceiros.
+        </p>
+        <button class="popup-close" id="popupClose1" onclick="closePopup('popupTermos')">
+          <p>Fechar</p>
+        </button>
+      </div>
+    </div>
+
+    <!-- Popup for Autorização do uso de imagem -->
+    <div class="popup" id="popupAutorizacao">
+      <div class="popup-content">
+        <h3>Autorização do uso de imagem</h3>
+        <p>
+          Estou ciente e de acordo que a minha imagem poderá ser utilizada única
+          e exclusivamente para a exposição no Visitor Center na sede do iFood,
+          por tempo indeterminado.
+        </p>
+
+        <p>
+          Estou ciente e de acordo com o tratamento de meus dados, como nome e
+          foto, pelo iFood única e exclusivamente para o Mural dos Sonhos. Caso
+          queira excluir seus dados, solicite através do e-mail
+          <a href="mailto:visitor_center@ifood.com.br"
+            >visitor_center@ifood.com.br</a
+          >.
+        </p>
+
+        <button class="popup-close" id="popupClose2" onclick="closePopup('popupAutorizacao')">
+          Fechar
+        </button>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/exif-js/2.3.0/exif.min.js"></script>
+    <script>
+      
+      document
+        .getElementById("photo-input")
+        .addEventListener("change", function (event) {
+          const file = event.target.files[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+              const img = new Image();
+              img.onload = function () {
+                EXIF.getData(img, function () {
+                  const orientation = EXIF.getTag(this, "Orientation");
+
+                  // Criando um canvas para ajustar a imagem conforme a orientação
+                  const canvas = document.createElement("canvas");
+                  const ctx = canvas.getContext("2d");
+                  let width = img.width;
+                  let height = img.height;
+
+                  // Ajusta as dimensões do canvas conforme a orientação
+                  if (orientation === 6 || orientation === 8) {
+                    canvas.width = height;
+                    canvas.height = width;
+                  } else {
+                    canvas.width = width;
+                    canvas.height = height;
+                  }
+
+                  // Aplica as transformações necessárias para a orientação correta
+                  switch (orientation) {
+                    case 2:
+                      ctx.transform(-1, 0, 0, 1, width, 0);
+                      break; // Flip horizontal
+                    case 3:
+                      ctx.transform(-1, 0, 0, -1, width, height);
+                      break; // Rotate 180°
+                    case 4:
+                      ctx.transform(1, 0, 0, -1, 0, height);
+                      break; // Flip vertical
+                    case 5:
+                      ctx.transform(0, 1, 1, 0, 0, 0);
+                      break; // Flip vertical + rotate 90° CW
+                    case 6:
+                      ctx.transform(0, 1, -1, 0, height, 0);
+                      break; // Rotate 90° CW
+                    case 7:
+                      ctx.transform(0, -1, -1, 0, height, width);
+                      break; // Flip horizontal + rotate 90° CW
+                    case 8:
+                      ctx.transform(0, -1, 1, 0, 0, width);
+                      break; // Rotate 90° CCW
+                    default:
+                      ctx.transform(1, 0, 0, 1, 0, 0);
+                      break; // Default orientation
+                  }
+
+                  ctx.drawImage(img, 0, 0);
+
+                  // Atualiza o preview com a imagem ajustada
+                  const preview = document.getElementById("uploadedImage");
+                  preview.src = canvas.toDataURL("image/jpeg");
+                  preview.style.display = "block";
+                });
+              };
+
+              img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+          }
+        });
+      function shareOnFacebook() {
+        window.open(
+          "https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fexample.com%2F",
+          "_blank"
+        );
+      }
+
+      function shareOnTwitter() {
+        window.open(
+          "https://twitter.com/intent/tweet?url=https%3A%2F%2Fexample.com%2F&text=Acabei%20de%20compartilhar%20minha%20frase%20no%20iFood%20Dreams!",
+          "_blank"
+        );
+      }
+
+      function closePopup(popupId) {
+        document.getElementById(popupId).style.display = "none";
+      }
+
+      document
+        .getElementById("termsPrivacidade")
+        .addEventListener("change", function (event) {
+          if (event.target.checked) {
+            document.getElementById("popupTermos").style.display = "flex";
+          }
+        });
+
+      document
+        .getElementById("autorizacaoImagem")
+        .addEventListener("change", function (event) {
+          if (event.target.checked) {
+            document.getElementById("popupAutorizacao").style.display = "flex";
+          }
+        });
+
+      document
+        .getElementById("phraseForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+          const formData = new FormData(this);
+
+          // Verifica se os checkboxes de aceitar termos estão marcados
+          if (
+            !document.getElementById("termsPrivacidade").checked ||
+            !document.getElementById("autorizacaoImagem").checked
+          ) {
+            alert("Por favor, aceite os termos e condições.");
+            return;
+          }
+
+          fetch("/api/phrase", {
+            method: "POST",
+            body: formData,
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              console.log("Resposta do servidor:", data);
+              document.getElementById("name").value = "";
+              document.getElementById("phrase").value = "";
+              document.getElementById("photo-input").value = "";
+              document.getElementById("termsPrivacidade").checked = false;
+              document.getElementById("autorizacaoImagem").checked = false;
+
+              // Mostrar a mensagem de agradecimento
+              const thankYouContainer = document.querySelector(
+                ".thank-you-container"
+              );
+              thankYouContainer.style.display = "block";
+
+              // Atualizar a mensagem de agradecimento e a imagem
+              const thankYouMessage =
+                document.getElementById("thankYouMessage");
+              thankYouMessage.innerText = `"${data.phrase}" - ${data.name}`;
+
+              const uploadedImage = document.getElementById("uploadedImage");
+              uploadedImage.src =
+                data.imageUrl ||
+                "https://arredondar.org.br/wp-content/uploads/2021/08/iFood-Logo-site.png";
+
+              // Atualizar a mensagem do balão
+              const messageBubble = document.querySelector(".message-bubble");
+              if(currentLanguage == "pt") {
+                messageBubble.innerHTML = `Galera, ${data.name} está na área! e curte muito ${data.phrase}`;
+              } else {
+                messageBubble.innerHTML = `<p>"${data.phrase}"</p> <p class="name-text">${data.name}</p> <p class="date-text">Your dream will come true in: </p>`;
+              }
+              
+            })
+            .catch((error) => {
+              console.error("Erro:", error);
+            });
+        });
+
+      function shareOnSocialMedia() {
+        html2canvas(document.querySelector(".message-container"), {
+          scale: 2,
+        })
+          .then((canvas) => {
+            // Convertendo a imagem para um formato de URL base64
+            const imgData = canvas.toDataURL("image/png");
+
+            // Cria um link temporário para o download da imagem
+            const link = document.createElement("a");
+            link.href = imgData;
+            link.download = "thank-you-image.png";
+            link.click();
+
+            // Exemplo de compartilhamento via WhatsApp
+            /*const whatsappUrl = `https://api.whatsapp.com/send?text=Confira%20minha%20imagem:%20${encodeURIComponent(
+              imgData
+            )}`;
+            window.open(whatsappUrl, "_blank");*/
+          })
+          .catch((error) => {
+            console.error("Erro ao capturar a imagem:", error);
+          });
+      }
+
+      const translations = {
+        pt: {
+          title01: "Obrigado!",
+          title02: "Mensagem recebida com sucesso!",
+          shareButton: "Compartilhe nas redes sociais!",
+          namePlaceholder: "Nome",
+          phrasePlaceholder: "Digite a frase",
+          sonhoGrande: "Data para realização do sonho grande",
+          selfTitle: "Tire sua self!",
+          termosPrivacidade: "Termos de Privacidade",
+          autorizacaoImagem: "Autorização do uso de imagem",
+          popupTermosTitle: "Termos de Privacidade",
+          popupTermosText:
+            "Visitor Center iFood: Os dados coletados serão tratados em conformidade com a Lei Geral de Proteção de Dados...",
+          popupAutorizacaoTitle: "Autorização do uso de imagem",
+          popupAutorizacaoText:
+            "Estou ciente e de acordo que a minha imagem poderá ser utilizada única e exclusivamente para a exposição no Visitor Center...",
+          enviarButton: "ENVIAR",
+          popupClose: "FECHAR"
+        },
+        en: {
+          title01: "Thank you!",
+          title02: "Message successfully received!",
+          shareButton: "Share on social media!",
+          namePlaceholder: "Name",
+          phrasePlaceholder: "Type the phrase",
+          sonhoGrande: "Date for the big dream realization",
+          selfTitle: "Take your selfie!",
+          termosPrivacidade: "Privacy Terms",
+          autorizacaoImagem: "Image Use Authorization",
+          popupTermosTitle: "Privacy Terms",
+          popupTermosText:
+            "Visitor Center iFood: The collected data will be processed in accordance with the General Data Protection Law...",
+          popupAutorizacaoTitle: "Image Use Authorization",
+          popupAutorizacaoText:
+            "I am aware and agree that my image may be used solely and exclusively for exhibition at the Visitor Center...",
+          enviarButton: "SEND",
+          popupClose: "CLOSE"
+        },
+      };
+
+      // Aplica as traduções na página
+      function applyTranslations(language) {
+        document.getElementById("title-01").textContent =
+          translations[language].title01;
+        document.getElementById("title-02").textContent =
+          translations[language].title02;
+        document.getElementById("shareButton").textContent =
+          translations[language].shareButton;
+        document.querySelector("label[for='name']").textContent =
+          translations[language].namePlaceholder;
+        document.querySelector("label[for='phrase']").textContent =
+          translations[language].phrasePlaceholder;
+        document.getElementById("tire-self-title").textContent =
+          translations[language].selfTitle;
+        document.querySelector("label[for='termsPrivacidade']").textContent =
+          translations[language].termosPrivacidade;
+        document.querySelector("label[for='autorizacaoImagem']").textContent =
+          translations[language].autorizacaoImagem;
+        document.getElementById("popupTermos").querySelector("h3").textContent =
+          translations[language].popupTermosTitle;
+        document.getElementById("popupTermos").querySelector("p").textContent =
+          translations[language].popupTermosText;
+        document
+          .getElementById("popupAutorizacao")
+          .querySelector("h3").textContent =
+          translations[language].popupAutorizacaoTitle;
+        document
+          .getElementById("popupAutorizacao")
+          .querySelector("p").textContent =
+          translations[language].popupAutorizacaoText;
+        document.querySelector("button[type='submit']").textContent =
+          translations[language].enviarButton;
+        document.getElementById("popupClose1").textContent =
+          translations[language].popupClose;
+          document.getElementById("popupClose2").textContent =
+          translations[language].popupClose;
+      }
+
+      // Controle do botão flutuante com bandeiras
+      const languageButton = document.getElementById("toggle-language");
+      const languageFlag = document.getElementById("language-flag");
+
+      // Armazena o idioma atual
+      let currentLanguage = "pt";
+
+      languageFlag.src = "./images/BR.png"; // Bandeira do Brasil
+
+      // Alterna o idioma ao clicar no botão
+      languageButton.addEventListener("click", () => {
+        currentLanguage = currentLanguage === "pt" ? "en" : "pt";
+
+        if (currentLanguage === "pt") {
+          languageFlag.src = "./images/BR.png"; // Bandeira do Brasil
+          languageFlag.alt = "Português";
+        } else {
+          languageFlag.src = "./images/EN.png"; // Bandeira do Reino Unido
+          languageFlag.alt = "English";
+        }
+
+        // Aplica a tradução
+        applyTranslations(currentLanguage);
+      });
+      
+
+      // Tradução inicial
+      applyTranslations(currentLanguage);
+    </script>
+  </body>
+</html>

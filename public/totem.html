@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Totem</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #ff172c;
+            font-family: 'Poppins', sans-serif; /* Fonte Poppins */
+            background-size: cover;
+            background-position: center;
+            text-align: center;
+            transition: background 1s ease-in-out;
+            position: relative;
+        }
+        .screen {
+            position: absolute;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 1s ease-in-out, visibility 1s ease-in-out, top 1s ease-in-out; /* Adicionando transição para top */
+            width: 90%;
+            top: 100%; /* Posição inicial acima do topo */
+            background-color: white; /* Box branco */
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .visible {
+            opacity: 1;
+            visibility: visible;
+            height: auto;
+            top: 30%; /* Posição final no centro */
+        }
+        #qrCode {
+            width: 200px;
+            height: 200px;
+            align-items: center;
+        }
+        #ifoodLogo {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: auto;
+        }
+        .enter {
+            top: 40%; /* Posição no meio */
+        }
+        .exit {
+            top: -100%; /* Posição acima do topo */
+        }
+
+        #qrCode img{
+            position: absolute;
+            max-width: 40%;
+            height: auto;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+    </style>
+</head>
+<body>
+    <img id="ifoodLogo" src="https://arredondar.org.br/wp-content/uploads/2021/08/iFood-Logo-site.png" alt="iFood Logo"> <!-- Logo do iFood -->
+    <div id="initial" class="screen visible">
+        <h1>Bem-vindo! Escaneie o QR Code para cadastrar sua frase.</h1>
+        <div id="qrCode"></div>
+    </div>
+    <div id="phraseDisplay" class="screen">
+        <h1><span id="name"></span> deseja:</h1>
+        <div id="phrase"></div>
+    </div>
+    <div id="thankYou" class="screen">
+        <h1>Obrigado!</h1>
+        <p>Aguarde um momento...</p>
+    </div>
+
+    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script> <!-- Importa a biblioteca QR Code -->
+    <script>
+        const initialScreen = document.getElementById('initial');
+        const phraseScreen = document.getElementById('phraseDisplay');
+        const thankYouScreen = document.getElementById('thankYou');
+        const nameElement = document.getElementById('name');
+        const phraseElement = document.getElementById('phrase');
+
+        function switchScreen(screen) {
+            console.log(`Switching to screen: ${screen}`);
+            initialScreen.classList.remove('visible');
+            phraseScreen.classList.remove('visible', 'enter'); // Removendo classes 'visible' e 'exit'
+            thankYouScreen.classList.remove('visible');
+            
+
+            if (screen === 'initial') {
+                setTimeout(() => {
+                    initialScreen.classList.add('visible');
+                    generateQRCode();
+                }, 100);
+            } else if (screen === 'phraseDisplay') {
+                setTimeout(() => {
+                    phraseScreen.classList.add('visible', 'enter');
+                }, 100);
+            } else if (screen === 'thankYou') {
+                setTimeout(() => {
+                    thankYouScreen.classList.add('visible');
+                    phraseScreen.classList.add('visible', 'exit');
+                }, 100);
+            }
+        }
+
+        function generateQRCode() {
+            const url = window.location.href + '/index.html'; // Obtém a URL atual com o caminho para index.html
+            new QRCode(document.getElementById("qrCode"), url);
+        }
+
+        const ws = new WebSocket('ws://' + window.location.host);
+
+        ws.onmessage = (event) => {
+            console.log('Received message:', event.data);
+            const data = JSON.parse(event.data);
+            console.log('Received data:', data); // Adiciona log para debug
+            nameElement.innerText = data.name;
+            phraseElement.innerText = data.phrase;
+            switchScreen('phraseDisplay');
+
+            setTimeout(() => {
+                phraseScreen.classList.remove('enter'); // Removendo classe 'enter'
+                phraseScreen.classList.add('exit'); // Adicionando classe 'exit'
+                switchScreen('thankYou');
+                setTimeout(() => {
+                    switchScreen('initial');
+                }, 10000);
+            }, 10000);
+        };
+
+        ws.onopen = () => {
+            console.log('Conectado ao WebSocket');
+        };
+
+        ws.onclose = () => {
+            console.log('Desconectado do WebSocket');
+        };
+
+        // Inicializa na tela inicial
+        switchScreen('initial');
+    </script>
+</body>
+</html>
