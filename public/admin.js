@@ -66,7 +66,7 @@ async function rejeitar(id) {
   loadPendingMessages();
 }
 
-const socket = new WebSocket(`wss://${window.location.host}`);
+const socket = new WebSocket(`ws://${window.location.host}`);
 socket.onmessage = function (event) {
   const data = JSON.parse(event.data);
   if (data.signal === 'nova_pendente') {

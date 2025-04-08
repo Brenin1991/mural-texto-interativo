@@ -174,17 +174,10 @@
         padding: 20px; /* Espaçamento interno */
         border-radius: 20px; /* Bordas arredondadas */
         width: 80%;
-        height: 50%;
       }
 
       .message-bubble {
-        position: absolute;
-        background-size: cover;
-        background-position: center;
-        width: 180px; /* Ajuste conforme necessário */
-        height: 200px;
-        bottom: 100px;
-        right: 50px;
+        color: #ddd;
       }
 
       .message-bubble p {
@@ -211,7 +204,7 @@
       }
 
       .image-container {
-        position: absolute;
+        position: flex;
         display: inline-block;
         width: 120px;
         height: 120px;
@@ -430,6 +423,14 @@
         border-radius: 50%; /* Opcional: para deixar a imagem redonda */
       }
 
+      #div-btns {
+        display: flex;
+        flex-direction: column;
+        align-items: center;     /* Alinha os botões horizontalmente ao centro */
+        height: 100vh;           /* Faz com que a div ocupe a altura inteira da tela */
+      }
+
+
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   </head>
@@ -457,7 +458,11 @@
           <p id="date-text" class="message-text"></p>
         </div>
       </div>
-      <button class="share-button" onclick="shareOnSocialMedia()"></button>
+      <div id="div-btns">
+        <button class="" onclick="shareLink()">Compartilhar</button>
+        <button class="" onclick="recarregarPagina()">Voltar</button>
+      </div>
+      
       <h2 id="shareButton">Compartilhe nas redes sociais!</h2>
     </div>
 
@@ -491,30 +496,7 @@
           style="display: none; max-width: 300px; max-height: 300px"
         /><br /><br />
         <h1 id="tire-self-title">Tire sua self!</h1>
-        <div class="termos">
-          <div class="checkbox-container">
-            <input
-              type="checkbox"
-              id="termsPrivacidade"
-              name="termsPrivacidade"
-              required
-            />
-            <label class="termos-label" for="termsPrivacidade"
-              >Termos de Privacidade</label
-            >
-          </div>
-          <div class="checkbox-container">
-            <input
-              type="checkbox"
-              id="autorizacaoImagem"
-              name="autorizacaoImagem"
-              required
-            />
-            <label class="termos-label" for="autorizacaoImagem"
-              >Autorização do uso de imagem</label
-            >
-          </div>
-        </div>
+        
         <button type="submit">ENVIAR</button>
       </form>
     </div>
@@ -653,35 +635,10 @@
       }
 
       document
-        .getElementById("termsPrivacidade")
-        .addEventListener("change", function (event) {
-          if (event.target.checked) {
-            document.getElementById("popupTermos").style.display = "flex";
-          }
-        });
-
-      document
-        .getElementById("autorizacaoImagem")
-        .addEventListener("change", function (event) {
-          if (event.target.checked) {
-            document.getElementById("popupAutorizacao").style.display = "flex";
-          }
-        });
-
-      document
         .getElementById("phraseForm")
         .addEventListener("submit", function (event) {
           event.preventDefault();
           const formData = new FormData(this);
-
-          // Verifica se os checkboxes de aceitar termos estão marcados
-          if (
-            !document.getElementById("termsPrivacidade").checked ||
-            !document.getElementById("autorizacaoImagem").checked
-          ) {
-            alert("Por favor, aceite os termos e condições.");
-            return;
-          }
 
           fetch("/api/phrase", {
             method: "POST",
@@ -693,8 +650,6 @@
               document.getElementById("name").value = "";
               document.getElementById("phrase").value = "";
               document.getElementById("photo-input").value = "";
-              document.getElementById("termsPrivacidade").checked = false;
-              document.getElementById("autorizacaoImagem").checked = false;
 
               // Mostrar a mensagem de agradecimento
               const thankYouContainer = document.querySelector(
@@ -715,7 +670,7 @@
               // Atualizar a mensagem do balão
               const messageBubble = document.querySelector(".message-bubble");
               if(currentLanguage == "pt") {
-                messageBubble.innerHTML = `Galera, ${data.name} está na área! e curte muito ${data.phrase}`;
+                messageBubble.innerHTML = `<p>${data.name}</p> <p>${data.phrase}</p>`;
               } else {
                 messageBubble.innerHTML = `<p>"${data.phrase}"</p> <p class="name-text">${data.name}</p> <p class="date-text">Your dream will come true in: </p>`;
               }
@@ -750,6 +705,20 @@
             console.error("Erro ao capturar a imagem:", error);
           });
       }
+
+      function shareLink() {
+          if (navigator.share) {
+            navigator.share({
+              title: document.title,
+              text: 'Dá uma olhada nesse site incrível!',
+              url: window.location.href
+            })
+            .then(() => console.log('Compartilhado com sucesso!'))
+            .catch((error) => console.error('Erro ao compartilhar:', error));
+          } else {
+            alert('O compartilhamento não é suportado neste navegador.');
+          }
+        }
 
       const translations = {
         pt: {
@@ -806,10 +775,6 @@
           translations[language].phrasePlaceholder;
         document.getElementById("tire-self-title").textContent =
           translations[language].selfTitle;
-        document.querySelector("label[for='termsPrivacidade']").textContent =
-          translations[language].termosPrivacidade;
-        document.querySelector("label[for='autorizacaoImagem']").textContent =
-          translations[language].autorizacaoImagem;
         document.getElementById("popupTermos").querySelector("h3").textContent =
           translations[language].popupTermosTitle;
         document.getElementById("popupTermos").querySelector("p").textContent =
@@ -858,6 +823,11 @@
 
       // Tradução inicial
       applyTranslations(currentLanguage);
+
+      function recarregarPagina() {
+        location.reload();
+      }
+
     </script>
   </body>
 </html>
