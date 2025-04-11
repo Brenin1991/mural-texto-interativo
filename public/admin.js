@@ -75,7 +75,7 @@ async function rejeitar(id) {
   loadPendingMessages();
 }
 
-const socket = new WebSocket(`ws://${window.location.host}`);
+const socket = new WebSocket(`wss://${window.location.host}`);
 // Atualização do WebSocket
 socket.onmessage = async function (event) {
   const data = JSON.parse(event.data);
