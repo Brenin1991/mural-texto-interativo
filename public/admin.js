@@ -7,10 +7,19 @@ const errorMessage = document.getElementById('error');
 const pendingContainer = document.getElementById('pending-container');
 const correctPassword = 'admin123'; // Altere conforme necessário
 
+// Verifica se já está logado
+if (localStorage.getItem('loggedIn') === 'true') {
+  loginContainer.classList.add('hidden');
+  dashboard.classList.remove('hidden');
+  loadMessages();
+  loadPendingMessages();
+}
+
 loginForm.onsubmit = function (e) {
   e.preventDefault();
   const password = passwordInput.value;
   if (password === correctPassword) {
+    localStorage.setItem('loggedIn', 'true'); // salva login
     loginContainer.classList.add('hidden');
     dashboard.classList.remove('hidden');
     loadMessages();
@@ -67,9 +76,35 @@ async function rejeitar(id) {
 }
 
 const socket = new WebSocket(`ws://${window.location.host}`);
-socket.onmessage = function (event) {
+// Atualização do WebSocket
+socket.onmessage = async function (event) {
   const data = JSON.parse(event.data);
   if (data.signal === 'nova_pendente') {
-    loadPendingMessages();
+    const autoApproveEnabled = localStorage.getItem('autoApprove') === 'true';
+    if (autoApproveEnabled) {
+      // Busca a mensagem mais recente pendente e aprova
+      const res = await fetch('/api/messages/pendentes');
+      const msgs = await res.json();
+      if (msgs.length > 0) {
+        const msgMaisRecente = msgs[msgs.length - 1]; // ou 0 se quiser a mais nova no topo
+        await aprovar(msgMaisRecente.id);
+      }
+    } else {
+      loadPendingMessages();
+    }
   }
 };
+
+
+
+const autoApproveToggle = document.getElementById('auto-approve-toggle');
+
+// Verifica estado salvo do toggle
+const autoApprove = localStorage.getItem('autoApprove') === 'true';
+autoApproveToggle.checked = autoApprove;
+
+// Salva mudança no toggle
+autoApproveToggle.addEventListener('change', () => {
+  localStorage.setItem('autoApprove', autoApproveToggle.checked);
+});
+
